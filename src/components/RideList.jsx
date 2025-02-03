@@ -2,16 +2,14 @@ import React, { useEffect, useState } from "react";
 import { View, Text, Button, FlatList, Alert, StyleSheet } from "react-native";
 import { db } from "../config/firebaseConfig";
 import { collection, query, where, onSnapshot, updateDoc, doc } from "firebase/firestore";
-import { MaterialIcons } from "@expo/vector-icons"; // For icons (optional)
+import { MaterialIcons } from "@expo/vector-icons"; 
 
 const RideList = () => {
   const [rides, setRides] = useState([]);
 
   useEffect(() => {
-    // Query for fetching only "pending" rides
+   
     const q = query(collection(db, "rides"), where("status", "==", "pending"));
-
-    // Real-time listener
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const rideData = [];
       querySnapshot.forEach((doc) => {
@@ -20,10 +18,10 @@ const RideList = () => {
       setRides(rideData);
     });
 
-    return () => unsubscribe(); // Cleanup listener when component unmounts
+    return () => unsubscribe(); 
   }, []);
 
-  // Function to accept ride
+ 
   const acceptRide = async (rideId) => {
     const rideRef = doc(db, "rides", rideId);
     await updateDoc(rideRef, { status: "completed" });
