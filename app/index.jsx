@@ -3,28 +3,27 @@ import RideList from "../src/components/RideList";
 
 export default function Index() {
   return (
-    <View>
+    <View style={{ flex: 1 }}> {/* Ensure full height */}
       <View style={styles.header}>
-        <Text style={styles.t}>riderApp</Text>
-        </View>
-      <RideList/>
+        <Text style={styles.t}>Drive</Text>
+      </View>
+      <RideList />
     </View>
   );
 }
 
-const styles = StyleSheet.create(
-  {
-    header: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      padding: 20,
-      alignItems: 'center',
-      backgroundColor:'blue',
-    },
-    t: {
+const styles = StyleSheet.create({
+  header: {
+    height: 60, // Fixed height for header
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    alignItems: 'center',
+    backgroundColor: 'purple',
+  },
+  t: {
     color: 'white',
-      fontSize: 18,
-      fontWeight: 'bold',
+    fontSize: 18,
+    fontWeight: 'bold',
   }
-  }
-)
+});

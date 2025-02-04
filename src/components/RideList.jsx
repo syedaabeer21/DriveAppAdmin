@@ -2,13 +2,12 @@ import React, { useEffect, useState } from "react";
 import { View, Text, Button, FlatList, Alert, StyleSheet } from "react-native";
 import { db } from "../config/firebaseConfig";
 import { collection, query, where, onSnapshot, updateDoc, doc } from "firebase/firestore";
-import { MaterialIcons } from "@expo/vector-icons"; 
+import { MaterialIcons } from "@expo/vector-icons";
 
 const RideList = () => {
   const [rides, setRides] = useState([]);
 
   useEffect(() => {
-   
     const q = query(collection(db, "rides"), where("status", "==", "pending"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const rideData = [];
@@ -18,16 +17,13 @@ const RideList = () => {
       setRides(rideData);
     });
 
-    return () => unsubscribe(); 
+    return () => unsubscribe();
   }, []);
 
- 
   const acceptRide = async (rideId) => {
     const rideRef = doc(db, "rides", rideId);
     await updateDoc(rideRef, { status: "completed" });
-    Alert.alert("Ride Accepted", "This ride has been marked as completed.", [
-      { text: "OK" },
-    ]);
+    Alert.alert("Ride Accepted", "This ride has been marked as completed.", [{ text: "OK" }]);
   };
 
   return (
@@ -40,6 +36,8 @@ const RideList = () => {
         <FlatList
           data={rides}
           keyExtractor={(item) => item.id}
+          contentContainerStyle={{ paddingBottom: 150 }} // Increased padding to fix cut issue
+          ListFooterComponent={<View style={{ height: 50 }} />} // Extra space at the end
           renderItem={({ item }) => (
             <View style={styles.rideCard}>
               <View style={styles.rideInfo}>
@@ -64,6 +62,7 @@ const RideList = () => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1, // Ensure full height usage
     padding: 20,
     backgroundColor: "#f5f5f5",
   },
