@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Button, FlatList, Alert, StyleSheet } from "react-native";
 import { db } from "../config/firebaseConfig";
-import { collection, query, where, onSnapshot, updateDoc, doc } from "firebase/firestore";
+import { collection, query, where, onSnapshot, updateDoc, doc, orderBy } from "firebase/firestore";
 import { MaterialIcons } from "@expo/vector-icons";
 
 const RideList = () => {
   const [rides, setRides] = useState([]);
 
   useEffect(() => {
-    const q = query(collection(db, "rides"), where("status", "==", "pending"));
+    const q = query(
+      collection(db, "rides"),
+      where("status", "==", "pending"),
+      orderBy("createdAt", "desc") // ✅ Firestore timestamp ke sath sorting
+    );
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const rideData = [];
       querySnapshot.forEach((doc) => {
@@ -99,4 +103,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RideList;
+export default RideList; 
